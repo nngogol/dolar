@@ -5,6 +5,7 @@ class LineM {
     this.count = count_;
     this.startPos = startPos_;
     this.endPos = endPos_;
+    this.speeed = 1;
 
     // init our grid
     this.linee = []
@@ -39,9 +40,6 @@ class LineM {
   }
 
   live() {
-    this.linee.map(x => x.live())
+    this.linee.map(x => x.live(this.speeed))
   }
-
-
-
 }

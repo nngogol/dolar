@@ -15,20 +15,22 @@ class Mover {
     this.go = !this.go;
   }
 
-  live() {
+  live(custom_speed = this.speed) {
+
+    
     // if we allowed to go
     if (this.go) {
       //PVector targer = PVector.sub(this.end, this.pos);
-      //targer.setMag(this.speed);
+      //targer.setMag(custom_speed);
       //pos.add(targer);
 
       // add 5 to x axis
       let addVec = createVector(1,0);
-      addVec.setMag(this.speed)
+      addVec.setMag(custom_speed)
       this.pos.add(addVec);
 
       // if we are close to end -> set current position to initStat
-      if (dist(this.pos.x, this.pos.y, this.end.x, this.end.y) < this.speed) {
+      if (dist(this.pos.x, this.pos.y, this.end.x, this.end.y) < custom_speed) {
         this.pos.mult(0);
         this.pos.add(this.initStart);
       }

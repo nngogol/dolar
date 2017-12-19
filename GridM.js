@@ -7,6 +7,7 @@ class GridM {
     this.startPos = startPos_;
     this.endPos = endPos_;
     this.spacing = 2;
+    this.speeed = 1;
 
     // init our grid
     this.grid = []
@@ -47,7 +48,7 @@ class GridM {
   }
 
   live() {
-    this.grid.map(x => x.live())
+    this.grid.map(x => x.live(this.speeed))
   }
 
 }
