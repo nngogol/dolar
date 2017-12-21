@@ -24,44 +24,19 @@ let income;
 let outcome;
 
 // settings
-let linne = 30;
-let nose = 40;
-let topTri;
-let bottomTri;
-
-// grid of income
-let cols = 30;
-let rows = 10;
-
-// grid position
-let st = -180; // start
-let en = 2;    // end
+let height_of_triabgle = 70;
+let width_of_triangle = 40;
 
 // speed of income grid of dollars
 let inSpeed;
 // speed of outcome line of dollars
 let outSpeed;
 
-function setup() {
-    createCanvas(1280, 360);
+// noise
+let xoff = 0.0;
 
-    // setup triangle height and width
-    topTri = createVector(0, linne);
-    bottomTri = createVector(0, -linne);
-
-    // setup income dollars grid
-    //         and 
-    // setup outcome dollars line
-    income = new GridM(cols, rows, st, en, .05, bottomTri, topTri, 5);
-    outcome = new LineM(25, nose, 200, .05, 5);
-    income.speeed = 0.1
-    outcome.speeed = 0.1
-
-    // setup style
-    translate(width / 2, height / 2);
-    scale(8);
-    textAlign(CENTER)
-    textSize(7)
+function setupIniValues() {
+    //=====================
 
     // setup controling
     createSpan('Use WASD  keys ')
@@ -70,6 +45,47 @@ function setup() {
 
     inSpeed = createSlider(0.1,0.9,0.1,.01);
     outSpeed = createSlider(0.1,0.9,0.1,.01);
+
+    //=====================
+
+    // setup style
+    textAlign(CENTER)
+    textSize(22)
+    // stroke(255,0,0)
+    // strokeWeight(25)
+
+    colorMode(HSL);
+}
+
+function setup() {
+    createCanvas(1280, 760);
+    height_of_triabgle=height/8
+    width_of_triangle= height_of_triabgle*1.5
+
+    setupIniValues()
+
+    // setup 2 main figures
+    let sbr = 26
+    let grid_len = 200
+    let helpDelta_grid = -5
+    let grid_pos = createVector(width/2-grid_len, height/2-height_of_triabgle + sbr + helpDelta_grid)
+
+    income = new GridM(
+      grid_pos, // pos
+      grid_len, // length
+      10, // density
+      sbr, // space_between_rows_
+      7, // rows_amount_
+      .2) // speed_
+
+    // let helpDelta_line = -5
+    let line_pos = createVector(width/2+width_of_triangle, height/2+sbr/3)
+
+    outcome = new LineM_for_grid(
+      line_pos, // pos_
+      10, // density_
+      200, // length_
+      .6) // char_speed_
 }
 
 
@@ -91,13 +107,8 @@ function keyReleased(event) {
     }
   }
 }
-// FOR MULTIPLE KEYS PRESSED _ END
 
-
-function draw() {
-
-  background(20);
-
+function keyzCheck() {
   // controling
   keyz.map(x => {
 
@@ -106,46 +117,69 @@ function draw() {
 
           // если нажата, то выполни действие, которое означает .code
           switch(x.code){
-          case 'w': outSpeed.value(outSpeed.value() + .01); outcome.speeed = outSpeed.value(); break;
-          case 's': outSpeed.value(outSpeed.value() - .01); outcome.speeed = outSpeed.value(); break;
-          case 'd': inSpeed.value(inSpeed.value() + .01); income.speeed = inSpeed.value(); break;
-          case 'a': inSpeed.value(inSpeed.value() - .01); income.speeed = inSpeed.value(); break;
+          case 'w': outSpeed.value(outSpeed.value() + .01); outcome.editSpeed(outSpeed.value()); break;
+          case 's': outSpeed.value(outSpeed.value() - .01); outcome.editSpeed(outSpeed.value()); break;
+          case 'd': inSpeed.value(inSpeed.value() + .01); income.editSpeed(inSpeed.value()); break;
+          case 'a': inSpeed.value(inSpeed.value() - .01); income.editSpeed(inSpeed.value()); break;
           
         }
       }
 
   })
+}
+
+function draw() {
+
+  background(0);
+
+  keyzCheck()
 
   // move dollars
   income.live();
   outcome.live();
   
-  translate(width / 2, height / 2);
-  scale(4);
-
   // show then
   income.render();
   outcome.render();
-  
-  
+ 
+  renderTriangle();
+}
+
+function renderTriangle() {
   // display triangle  
-  push();
-  beginShape();
-  fill(255, 20, 150,128);
+  push()
+  translate(width*.5, height*.5)
+
+  fill(315, 100, 41, 0.87);
   noStroke();
-  vertex(topTri.x, topTri.y);
-  vertex(bottomTri.x, bottomTri.y);
-  vertex(nose, 0);
+
+  beginShape();
+  let topVect = createVector(0, height_of_triabgle)
+  let botVect = createVector(0, -height_of_triabgle)
+  let noseVect = createVector(width_of_triangle, 0)
+  vertex(topVect.x, topVect.y);
+  vertex(botVect.x, botVect.y);
+  vertex(noseVect.x, noseVect.y);
   endShape(CLOSE);
+
+  fill(338, 100, 41, 0.87);
+  noStroke();
 
   // display triangle pink twin  
   beginShape();
-  fill(255, 20, 30,128);
-  noStroke();
-  vertex(topTri.x+2, topTri.y-1);
-  vertex(bottomTri.x+2, bottomTri.y-1);
-  vertex(nose-1, 0);
+  topVect = createVector(2, height_of_triabgle - 1)
+  botVect = createVector(2, -height_of_triabgle - 1)
+  noseVect = createVector(width_of_triangle - 1 + noise(xoff)*20, 0)
+  let mouseVec = createVector(mouseX,mouseY )
+  let pmouseVec = createVector(pmouseX,pmouseY)
+  let mouseForceMag = p5.Vector.sub(pmouseVec, mouseVec).mag()/15
+  noseVect.add(mouseForceMag)
+  vertex(topVect.x, topVect.y);
+  vertex(botVect.x, botVect.y);
+  vertex(noseVect.x, noseVect.y);
   endShape(CLOSE);
+  pop()
+
+  xoff = xoff + .01;
   
-  pop();
 }
