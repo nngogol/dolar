@@ -46,7 +46,6 @@ class Mover {
     if (colr) {
       fill(colr)
     }else{// if there isn't color
-      
       fill(2,2,2)
     }
     //40 19 45                  93 10 112                     234 0 123

@@ -41,10 +41,20 @@ class GridM {
   }
 
   render() {
-    this.lines.map(x => x.render(this.speed))
-    // let hu = map(x.pos.x, x.initStart.x, x.end.x, 0, 10)
-    // let br = map(x.pos.x, x.initStart.x, x.end.x, 0, 150)
-    // liine.render(color(hu, 255, br)) 
+    for (let i = 0; i < this.lines.length; i++) {
+      const some_line = this.lines[i];
+
+      some_line.movers.map(x => {
+
+        let hu = map(x.pos.x, x.initStart.x, x.end.x, 280, 320) 
+
+        let br = map(x.pos.x, x.initStart.x, x.end.x+60, 20, 50)
+        
+        x.render(color(hu, 200, br)) 
+      });
+      
+    }
+    
   }
 
   live() {

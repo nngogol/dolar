@@ -32,6 +32,9 @@ let inSpeed;
 // speed of outcome line of dollars
 let outSpeed;
 
+// noise
+let xoff = 0.0;
+
 function setupIniValues() {
     //=====================
 
@@ -51,27 +54,31 @@ function setupIniValues() {
     // stroke(255,0,0)
     // strokeWeight(25)
 
-    // colorMode(HSB);
+    colorMode(HSL);
 }
 
 function setup() {
     createCanvas(1280, 760);
+    height_of_triabgle=height/8
+    width_of_triangle= height_of_triabgle*1.5
 
     setupIniValues()
 
     // setup 2 main figures
-    let sbr = 25
+    let sbr = 26
     let grid_len = 200
-    let grid_pos = createVector(width/2-grid_len, height/2-height_of_triabgle + sbr)
+    let helpDelta_grid = -5
+    let grid_pos = createVector(width/2-grid_len, height/2-height_of_triabgle + sbr + helpDelta_grid)
 
     income = new GridM(
       grid_pos, // pos
       grid_len, // length
       10, // density
       sbr, // space_between_rows_
-      5, // rows_amount_
+      7, // rows_amount_
       .8) // speed_
 
+    // let helpDelta_line = -5
     let line_pos = createVector(width/2+width_of_triangle, height/2+sbr/3)
 
     outcome = new LineM_for_grid(
@@ -143,24 +150,27 @@ function renderTriangle() {
   push()
   translate(width*.5, height*.5)
 
-  fill(255, 255, 255);
+  fill(315, 100, 41, 0.27);
   noStroke();
 
   beginShape();
+  // let topV = createVector()
   vertex(0, height_of_triabgle);
   vertex(0, -height_of_triabgle);
   vertex(width_of_triangle, 0);
   endShape(CLOSE);
 
-  fill(240, 58, 99);
+  fill(338, 100, 41, 0.37);
   noStroke();
 
   // display triangle pink twin  
   beginShape();
   vertex(2, height_of_triabgle - 1);
-  vertex(2, -height_of_triabgle - 1);
-  vertex(width_of_triangle - 1, 0);
+  vertex(2, -height_of_triabgle - 1) ;
+  vertex(width_of_triangle - 1 + noise(xoff)*20, 0);
   endShape(CLOSE);
   pop()
+
+  xoff = xoff + .01;
   
 }

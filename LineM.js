@@ -108,13 +108,17 @@ class LineM_for_grid {
   render() {
     this.movers.map(x => {
       // console.log(x)
-      // let hu = map(x.pos.x, x.initStart.x, x.end.x, 0, 10)
-      // let br = map(x.pos.x, x.initStart.x, x.end.x, 150, 0)
+      let hu = map(x.pos.x, x.initStart.x, x.end.x, 320, 350)
+      let br = map(x.pos.x, x.initStart.x, x.end.x+60, 50, 10)
       // let br = map(x.curr, 0, dist(x.initStart, x.end), 0, 255)
-      // x.render(color(hu, 255, br)) 
-      x.render() 
+      x.render(color(hu, 200, br)) 
+      // x.render() 
     })
   }
+
+  // render(custom_color) {
+  //   this.movers.map(x => x.render(custom_color))
+  // }
 
   live() {
     this.movers.map(x => x.live(this.char_speed))
