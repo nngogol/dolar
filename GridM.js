@@ -1,54 +1,54 @@
 class GridM {
 
-  constructor(cols_, rows_, startPos_, endPos_, speed_, bottomTri, topTri, radddiums) {
+  constructor(pos_, lenght_, density_, space_between_rows_, rows_amount_, speed_){
 
-    this.cols = cols_;
-    this.rows = rows_;
-    this.startPos = startPos_;
-    this.endPos = endPos_;
-    this.spacing = 2;
-    this.speeed = 1;
+    // position of the grid
+    this.pos = pos_
+    // how lenght(width) the grid is
+    this.lenght = lenght_
+    // amount of dolars in this line - their density
+    this.density = density_
+    // space between row(line of dolars)
+    this.space_between_rows = space_between_rows_
+    // how much lines there is grid
+    this.rows_amount = rows_amount_
+    // speed of each line
+    this.speed = speed_
 
-    // init our grid
-    this.grid = []
-
-    // insert Movers into grid
-    for (let i = 1; i < this.rows; i++) {
-      for (let j = 0; j < this.cols-1; j++) {
-
-        // initial(start) position
-        let init = createVector (this.startPos, map(i, 0, this.rows - 1, bottomTri.y + this.spacing, topTri.y - this.spacing ));
-
-        // end(finish) position
-        let end = createVector(this.endPos, map(i, 0, this.rows - 1, bottomTri.y + this.spacing, topTri.y - this.spacing ));
-
-        // its own position
-        let curr = createVector(
-          map(j, 0, this.cols - 1, this.startPos, this.endPos),
-          map(i, 0, this.rows - 1, bottomTri.y + this.spacing, topTri.y - this.spacing ));
+    // a lines array
+    this.lines = []
 
 
-        // make mover
-        let m = new Mover( init, end, curr, speed_, radddiums);
-
-        // run mover
-        m.run_switch();
-
-        // add it to 2d array
-        this.grid.push(m)
-      }
+    for (let i = 0; i < this.rows_amount; i++) {
+      let some_line = new LineM_for_grid(createVector(this.pos.x, this.pos.y+i*this.space_between_rows),
+                                          this.density,
+                                          this.lenght,
+                                          this.speed);
+      this.lines.push(some_line)
     }
-
-
 
   }
 
-  render(clo) {
-    this.grid.map(x => x.render(color(180,x.pos.x, x.pos.y)))
+  changeMoversRadius(r){
+    this.lines = this.lines.map(x => {
+      let newLine = x.changeMoversRadius(r)
+      return newLine
+    })
+  }
+
+  editSpeed(s){
+    this.speed = s;
+  }
+
+  render() {
+    this.lines.map(x => x.render(this.speed))
+    // let hu = map(x.pos.x, x.initStart.x, x.end.x, 0, 10)
+    // let br = map(x.pos.x, x.initStart.x, x.end.x, 0, 150)
+    // liine.render(color(hu, 255, br)) 
   }
 
   live() {
-    this.grid.map(x => x.live(this.speeed))
+    this.lines.map(x => x.live(this.speed))
   }
 
 }
