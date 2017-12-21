@@ -50,7 +50,7 @@ function setupIniValues() {
 
     // setup style
     textAlign(CENTER)
-    textSize(20)
+    textSize(22)
     // stroke(255,0,0)
     // strokeWeight(25)
 
@@ -76,7 +76,7 @@ function setup() {
       10, // density
       sbr, // space_between_rows_
       7, // rows_amount_
-      .8) // speed_
+      .2) // speed_
 
     // let helpDelta_line = -5
     let line_pos = createVector(width/2+width_of_triangle, height/2+sbr/3)
@@ -85,7 +85,7 @@ function setup() {
       line_pos, // pos_
       10, // density_
       200, // length_
-      .8) // char_speed_
+      .6) // char_speed_
 }
 
 
@@ -130,7 +130,7 @@ function keyzCheck() {
 
 function draw() {
 
-  background(51);
+  background(0);
 
   keyzCheck()
 
@@ -150,24 +150,33 @@ function renderTriangle() {
   push()
   translate(width*.5, height*.5)
 
-  fill(315, 100, 41, 0.27);
+  fill(315, 100, 41, 0.87);
   noStroke();
 
   beginShape();
-  // let topV = createVector()
-  vertex(0, height_of_triabgle);
-  vertex(0, -height_of_triabgle);
-  vertex(width_of_triangle, 0);
+  let topVect = createVector(0, height_of_triabgle)
+  let botVect = createVector(0, -height_of_triabgle)
+  let noseVect = createVector(width_of_triangle, 0)
+  vertex(topVect.x, topVect.y);
+  vertex(botVect.x, botVect.y);
+  vertex(noseVect.x, noseVect.y);
   endShape(CLOSE);
 
-  fill(338, 100, 41, 0.37);
+  fill(338, 100, 41, 0.87);
   noStroke();
 
   // display triangle pink twin  
   beginShape();
-  vertex(2, height_of_triabgle - 1);
-  vertex(2, -height_of_triabgle - 1) ;
-  vertex(width_of_triangle - 1 + noise(xoff)*20, 0);
+  topVect = createVector(2, height_of_triabgle - 1)
+  botVect = createVector(2, -height_of_triabgle - 1)
+  noseVect = createVector(width_of_triangle - 1 + noise(xoff)*20, 0)
+  let mouseVec = createVector(mouseX,mouseY )
+  let pmouseVec = createVector(pmouseX,pmouseY)
+  let mouseForceMag = p5.Vector.sub(pmouseVec, mouseVec).mag()/15
+  noseVect.add(mouseForceMag)
+  vertex(topVect.x, topVect.y);
+  vertex(botVect.x, botVect.y);
+  vertex(noseVect.x, noseVect.y);
   endShape(CLOSE);
   pop()
 

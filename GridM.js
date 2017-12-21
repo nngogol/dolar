@@ -37,6 +37,9 @@ class GridM {
   }
 
   editSpeed(s){
+    this.lines.map(x => {
+      x.editSpeed(s)
+    })
     this.speed = s;
   }
 
