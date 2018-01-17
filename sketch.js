@@ -32,8 +32,21 @@ let inSpeed;
 // speed of outcome line of dollars
 let outSpeed;
 
-// noise
+// perlin noise
 let xoff = 0.0;
+
+////////////////////////////////////////////////////////////////////////////////
+
+var gui;
+// seed color and alpha
+var bgColor = [0, 0, 0];
+
+var grid_row = 4;
+var grid_rowMin = 1;
+var grid_rowMax = 20;
+
+
+////////////////////////////////////////////////////////////////////////////////
 
 function setupIniValues() {
     //=====================
@@ -59,6 +72,10 @@ function setupIniValues() {
 
 function setup() {
     createCanvas(1280, 760);
+
+    gui = createGui('Controll panell');
+    gui.addGlobals('seeds', 'bgColor');
+
     height_of_triabgle=height/8
     width_of_triangle= height_of_triabgle*1.5
 
@@ -130,7 +147,7 @@ function keyzCheck() {
 
 function draw() {
 
-  background(0);
+  background(bgColor);
 
   keyzCheck()
 
